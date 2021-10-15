@@ -1,0 +1,11 @@
+boto3
+dj-database-url
+django
+django-storages
+django-sass-processor
+factory_boy
+libsass
+pillow
+psycopg2
+pytest_django
+uwsgi

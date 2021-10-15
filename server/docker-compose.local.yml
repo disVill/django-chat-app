@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: django_template_db
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./db/:/var/lib/postgresql/data
+
+  web:
+    build: ./app
+    container_name: django_template_web
+    volumes:
+      - ./app:/code
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    command: >
+      /bin/sh -c
+        'echo "Waiting for postgres..." &&
+        while ! nc -z db 5432; do sleep 1; done &&
+        echo "PostgreSQL started" &&
+
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8080'
+
+  minio:
+    image: minio/minio
+    container_name: django_template_minio
+    command: ["server","--compat", "/data"]
+    environment:
+      MINIO_ACCESS_KEY: minio_dev
+      MINIO_SECRET_KEY: minio_dev
+    ports:
+      - "9000:9000"
