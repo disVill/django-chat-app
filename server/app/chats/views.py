@@ -16,7 +16,7 @@ class MessageListView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data()
         context['message_list'] = Rooms.objects.filter(
             Q(created_user=self.request.user) | Q(added_user=self.request.user)
-        )
+        ).order_by('created_at')
 
         return context
 

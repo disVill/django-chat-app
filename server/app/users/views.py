@@ -54,4 +54,4 @@ class SearchUserView(ListAPIView):
             return HttpResponseBadRequest({'detail': 'Bad perPage parameter'})
         if (name := self.request.GET.get('name', None) or None) is None:
             return Response({'detail': 'Invalid query param'}, status=status.HTTP_400_BAD_REQUEST)
-        return User.objects.filter(Q(username__icontains=name) | Q(display_name__icontains=name), is_staff=False).exclude(pk=self.request.user.pk)[:perPage]
+        return User.objects.filter(Q(username__icontains=name) | Q(display_name__icontains=name)).exclude(pk=self.request.user.pk)[:perPage]

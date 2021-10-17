@@ -33,6 +33,10 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_data)
 
 
+def user_directory_path(instance, filename):
+    return f'user_icons/{uuid_lib.uuid4()}.{filename.split(".")[-1]}'
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField('uuid', default=uuid_lib.uuid4, primary_key=True, editable=False)
 
@@ -53,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     display_name = models.CharField('表示名', max_length=100)
 
-    icon = models.FileField(upload_to='user_icons/', blank=True, null=True)
+    icon = models.FileField(upload_to=user_directory_path, blank=True, null=True)
 
     objects = UserManager()
 

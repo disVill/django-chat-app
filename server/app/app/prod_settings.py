@@ -1,14 +1,11 @@
-import dj_database_url
+# Production settings
 
 from .settings import *
 
 
 DEBUG = False
 
-# Database settings
-DATABASES = {
-    'default': dj_database_url.config()
-}
+AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
 
 
 # Static files settings
