@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'chats.apps.ChatsConfig',
 
     # 3rd party
+    'rest_framework',
+    'channels',
     'sass_processor',
     'storages',
 
