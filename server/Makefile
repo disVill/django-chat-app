@@ -3,7 +3,7 @@ compose = docker-compose -f docker-compose.local.yml
 
 .PHONY: loc
 loc: build-loc
-	$(compose) up
+	$(compose) up --build
 
 .PHONY: build-loc
 build-loc:
