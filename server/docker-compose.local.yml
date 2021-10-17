@@ -3,7 +3,7 @@ version: '3'
 services:
   db:
     image: postgres:latest
-    container_name: django_template_db
+    container_name: django_chat_db
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -13,7 +13,7 @@ services:
 
   web:
     build: ./app
-    container_name: django_template_web
+    container_name: django_chat_web
     volumes:
       - ./app:/code
     ports:
@@ -28,15 +28,24 @@ services:
         while ! nc -z db 5432; do sleep 1; done &&
         echo "PostgreSQL started" &&
 
+        python manage.py makemigrations &&
         python manage.py migrate &&
         python manage.py runserver 0.0.0.0:8080'
 
   minio:
     image: minio/minio
-    container_name: django_template_minio
+    container_name: django_chat_minio
     command: ["server","--compat", "/data"]
     environment:
       MINIO_ACCESS_KEY: minio_dev
       MINIO_SECRET_KEY: minio_dev
     ports:
       - "9000:9000"
+
+  redis:
+    image: "redis:latest"
+    container_name: django_chat_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./data/redis:/data"

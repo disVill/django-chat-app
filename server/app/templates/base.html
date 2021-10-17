@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+{% load sass_tags %}
+
+<html lang="{{ LANGUAGE_CODE|default:'ja' }}">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Messages{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% sass_src 'css/base.scss' %}">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="description" content="Django-chat-tool">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+  {% block content %}
+  {% endblock %}
+  </body>
+</html>

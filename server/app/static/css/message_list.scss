@@ -1,0 +1,109 @@
+main {
+  min-height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+
+  .message-list-wrapper {
+    margin-top: 30px;
+    border-radius: 10px;
+    width: clamp(450px, 90vw, 700px);
+    background-color: #FFF;
+  }
+}
+
+.message-header {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  border-bottom: 1px solid #e6ecf0;
+
+  .message-header-content {
+    font-size: 19px;
+    font-weight: 700;
+  }
+  .message-create-button-wrapper {
+    display: flex;
+    align-items: center;
+    button {
+      color: #fff;
+      border-radius: 9999px;
+      outline: none;
+      border: none;
+      background-color: #F8B62B;
+      padding: 6px 10px;
+      transition: .2s;
+    }
+    button:hover {
+      background-color: #F7A62C;
+      cursor: pointer;
+    }
+  }
+}
+
+.message {
+  color: #0f1419;
+  text-decoration: none;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+
+  &:hover {
+    background-color: #f7f9f9;
+    cursor: pointer;
+  }
+
+  .user-icon-wrapper {
+    padding-right: 11px;
+    .usericon {
+      vertical-align: bottom;
+      width: 46px;
+      border-radius: 30px;
+    }
+    .default-usericon {
+      width: 46px;
+      height: 46px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f7e1b5;
+      color: #FFF;
+    }
+  }
+
+  .username-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 19px;
+    .username-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .partner-display-name {
+        font-weight: 700;
+        margin-right: 5px;
+      }
+      .partner-username {
+        color: #536471;
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 500px) {
+  main {
+    .message-list-wrapper {
+        width: 100%;
+        padding-top: 15px;
+        margin-top: 0;
+        border-radius: none;
+    }
+  }
+
+}

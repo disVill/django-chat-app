@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-if (SECRET_KEY := os.getenv('DJANGO_SECRET_KEY')) == None:
+if (SECRET_KEY := os.getenv('DJANGO_SECRET_KEY', 'dummy_secret_key')) == None:
     raise ValueError('Please set the DJANGO_SECRET_KEY in dotenv file.')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -34,6 +34,8 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     # Local
+    'users.apps.UsersConfig',
+    'chats.apps.ChatsConfig',
 
     # 3rd party
     'sass_processor',
@@ -79,6 +81,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'app.wsgi.application'
+ASGI_APPLICATION = 'app.asgi.application'
+
+
+# Channel settings
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [
+                (os.getenv('REDIS_URL', 'redis'), '6379'),
+            ],
+        },
+    },
+}
 
 
 # Database
@@ -132,6 +149,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -159,3 +184,17 @@ SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.(sass|scss)$'
 SASS_PRECISION = 8
 SASS_OUTPUT_STYLE = 'compressed'
 SASS_TEMPLATE_EXTS = ['.html', '.haml']
+
+
+# Auth settings
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_URL = '/signin'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/signin'
+
+
+# CORS settings
+
+CORS_ORIGIN_ALLOW_ALL = True

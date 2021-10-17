@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% load sass_tags %}
+
+{% block title %}Messages{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% sass_src 'css/message_list.scss' %}">
+<link rel="stylesheet" type="text/css" href="{% sass_src 'css/create_message.scss' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="message-list-wrapper">
+    <div class="message-header">
+      <div class="message-header-content">Messages</div>
+      <div class="message-create-button-wrapper">
+        <button id="display_modal">Start a conversation</button>
+      </div>
+    </div>
+    <div class="message-list">
+    {% for message in message_list %}
+      <div id="{% url 'chats:message' room_pk=message.pk %}" class="message">
+        <div class="user-icon-wrapper">
+        {% if user == message.created_user %}
+          {% if message.added_user.icon %}
+          <img src="{{ message.added_user.icon.url }}" class="usericon">
+          {% else %}
+          <div class="default-usericon">
+            <i class="fas fa-user"></i>
+          </div>
+          {% endif %}
+        {% else %}
+          {% if message.created_user.icon %}
+          <img src="{{ message.created_user.icon.url }}" class="usericon">
+          {% else %}
+          <div class="default-usericon">
+            <i class="fas fa-user"></i>
+          </div>
+          {% endif %}
+        {% endif %}
+        </div>
+        <div class="username-message-wrapper">
+          <div class="username-wrapper">
+          {% if user == message.created_user %}
+            <div class="partner-display-name">{{ message.added_user.display_name }}</div>
+            <div class="partner-username">@{{ message.added_user.username }}</div>
+          {% else %}
+            <div class="partner-display-name">{{ message.created_user.display_name }}</div>
+            <div class="partner-username">@{{ message.created_user.username }}</div>
+          {% endif %}
+          </div>
+          <div class="last-message">{{ message.messages.latest.body }}</div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</main>
+{% include 'chats/create_message_modal.html' %}
+
+<script>
+document.querySelectorAll(".message").forEach((elem) => {
+    elem.addEventListener("click", () => {
+        window.location.href = elem.id;
+    })
+})
+</script>
+{% endblock %}
