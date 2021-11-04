@@ -32,11 +32,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user_pk = text_data_json['user_pk']
         user = await self.get_user_info(user_pk)
 
-        if user.icon:
-            icon_url = user.icon.url
-        else:
-            icon_url = None
-
         if not message:
             return
 
@@ -47,7 +42,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
-                'icon_url': icon_url,
+                'icon_url': user.icon.url if user.icon else None,
                 'user_pk': str(user.pk),
                 'display_name': user.display_name,
                 'username': user.username,
